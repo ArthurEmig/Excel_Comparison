@@ -22,30 +22,37 @@ A second sheet called **Summary** contains the totals.
 
 Requirements: [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
-```
-cd ExcelCompare
-dotnet publish -c Release
+From the repository root (this folder contains both `ExcelCompare.csproj` and
+`Excel_Comparison.sln`, so always pass one of them to `dotnet`):
+
+```powershell
+dotnet restore ExcelCompare.csproj
+dotnet publish ExcelCompare.csproj -c Release
 ```
 
-The final single-file .exe will be at:
+If restore was skipped and you see `NETSDK1004` (missing `obj\project.assets.json`),
+run `dotnet restore` first.
+
+The self-contained single-file executable is produced at:
 
 ```
 bin\Release\net8.0\win-x64\publish\ExcelCompare.exe
 ```
 
-That single file is fully self-contained — recipients do **not** need .NET
-installed. Just ship that one `.exe`.
+That build is **self-contained** — recipients do **not** need .NET installed.
+Ship that `.exe` alone.
 
 ### Build for a different platform
 
-Change `<RuntimeIdentifier>` in `ExcelCompare.csproj` or pass it on the
-command line, e.g.:
+The project defaults to `win-x64` in `ExcelCompare.csproj`. Override at publish time:
 
+```powershell
+dotnet publish ExcelCompare.csproj -c Release -r linux-x64
+dotnet publish ExcelCompare.csproj -c Release -r osx-x64
+dotnet publish ExcelCompare.csproj -c Release -r osx-arm64
 ```
-dotnet publish -c Release -r linux-x64
-dotnet publish -c Release -r osx-x64
-dotnet publish -c Release -r osx-arm64
-```
+
+You can also change `<RuntimeIdentifier>` in `ExcelCompare.csproj` if you always target one OS.
 
 ## Usage
 
